@@ -1,0 +1,266 @@
+/* Bounce-Animation für interaktive Elemente */
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+    40% {transform: translateY(-20px);}
+    60% {transform: translateY(-10px);}
+}
+
+.bounce {
+    animation: bounce 2s infinite;
+}
+
+/* Pulse-Animation für Feedback */
+@keyframes pulse {
+    0% {transform: scale(1);}
+    50% {transform: scale(1.05);}
+    100% {transform: scale(1);}
+}
+
+.pulse {
+    animation: pulse 1.5s infinite;
+}
+
+/* Pop-In für plötzlich erscheinende Elemente */
+@keyframes popIn {
+    0% {transform: scale(0.5); opacity: 0;}
+    70% {transform: scale(1.1);}
+    100% {transform: scale(1); opacity: 1;}
+}
+
+.pop-in {
+    animation: popIn 0.5s ease forwards;
+}
+
+/* Fade-In Animation */
+@keyframes fadeIn {
+    from {opacity: 0;}
+    to {opacity: 1;}
+}
+
+.fade-in {
+    animation: fadeIn 0.5s ease forwards;
+}
+
+/* Slide-In von rechts */
+@keyframes slideInRight {
+    from {transform: translateX(100%); opacity: 0;}
+    to {transform: translateX(0); opacity: 1;}
+}
+
+.slide-in-right {
+    animation: slideInRight 0.5s ease forwards;
+}
+
+/* Slide-In von links */
+@keyframes slideInLeft {
+    from {transform: translateX(-100%); opacity: 0;}
+    to {transform: translateX(0); opacity: 1;}
+}
+
+.slide-in-left {
+    animation: slideInLeft 0.5s ease forwards;
+}
+
+/* Float-Animation für schwebendes Gefühl */
+@keyframes float {
+    0% {transform: translateY(0px);}
+    50% {transform: translateY(-10px);}
+    100% {transform: translateY(0px);}
+}
+
+.float {
+    animation: float 3s ease-in-out infinite;
+}
+
+/* Shake-Animation für Fehlerhinweise */
+@keyframes shake {
+    0%, 100% {transform: translateX(0);}
+    10%, 30%, 50%, 70%, 90% {transform: translateX(-5px);}
+    20%, 40%, 60%, 80% {transform: translateX(5px);}
+}
+
+.shake {
+    animation: shake 0.5s;
+}
+
+/* Konfetti-Animation für Erfolge */
+@keyframes confetti {
+    0% {
+        opacity: 1;
+        transform: translateY(0) rotateZ(0);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(1000%) rotateZ(720deg);
+    }
+}
+
+.confetti {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background-color: var(--primary-color);
+    animation: confetti 5s ease-in-out forwards;
+}
+
+/* Buchstaben-Animation */
+@keyframes letterJump {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-15px);
+    }
+}
+
+.letter-jump {
+    display: inline-block;
+    animation: letterJump 0.5s ease;
+}
+
+/* Wellen-Animation für Buchstaben */
+.wave-text span {
+    display: inline-block;
+    animation-name: letterJump;
+    animation-duration: 0.5s;
+    animation-timing-function: ease;
+    animation-iteration-count: 1;
+}
+
+/* Sequentielle Animation für Wellen-Text */
+.wave-text span:nth-child(1) { animation-delay: 0.0s; }
+.wave-text span:nth-child(2) { animation-delay: 0.1s; }
+.wave-text span:nth-child(3) { animation-delay: 0.2s; }
+.wave-text span:nth-child(4) { animation-delay: 0.3s; }
+.wave-text span:nth-child(5) { animation-delay: 0.4s; }
+.wave-text span:nth-child(6) { animation-delay: 0.5s; }
+.wave-text span:nth-child(7) { animation-delay: 0.6s; }
+.wave-text span:nth-child(8) { animation-delay: 0.7s; }
+.wave-text span:nth-child(9) { animation-delay: 0.8s; }
+.wave-text span:nth-child(10) { animation-delay: 0.9s; }
+
+/* Rotation-Animation */
+@keyframes rotate {
+    from {transform: rotate(0deg);}
+    to {transform: rotate(360deg);}
+}
+
+.rotate {
+    animation: rotate 2s linear infinite;
+}
+
+/* Blink-Animation */
+@keyframes blink {
+    0%, 100% {opacity: 1;}
+    50% {opacity: 0.3;}
+}
+
+.blink {
+    animation: blink 1s ease-in-out infinite;
+}
+
+/* Slide-Up-Animation */
+@keyframes slideUp {
+    from {transform: translateY(50px); opacity: 0;}
+    to {transform: translateY(0); opacity: 1;}
+}
+
+.slide-up {
+    animation: slideUp 0.5s ease forwards;
+}
+
+/* Zoom-In-Animation */
+@keyframes zoomIn {
+    from {transform: scale(0); opacity: 0;}
+    to {transform: scale(1); opacity: 1;}
+}
+
+.zoom-in {
+    animation: zoomIn 0.5s ease forwards;
+}
+
+/* Heartbeat-Animation */
+@keyframes heartbeat {
+    0% {transform: scale(1);}
+    25% {transform: scale(1.1);}
+    50% {transform: scale(1);}
+    75% {transform: scale(1.1);}
+    100% {transform: scale(1);}
+}
+
+.heartbeat {
+    animation: heartbeat 1s infinite;
+}
+
+/* Flip-Animation für Memory-Karten */
+.flip-card {
+    perspective: 1000px;
+}
+
+.flip-card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+}
+
+.flip-card.flipped .flip-card-inner {
+    transform: rotateY(180deg);
+}
+
+.flip-card-front, .flip-card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    border-radius: var(--border-radius-md);
+}
+
+.flip-card-front {
+    background-color: var(--primary-color);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+}
+
+.flip-card-back {
+    background-color: white;
+    color: var(--text-color);
+    transform: rotateY(180deg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    border: 2px solid var(--primary-color);
+}
+
+/* Twinkling-Stars-Animation */
+@keyframes twinkle {
+    0%, 100% {opacity: 1; transform: scale(1);}
+    50% {opacity: 0.5; transform: scale(0.8);}
+}
+
+.twinkle {
+    animation: twinkle 2s ease-in-out infinite;
+}
+
+/* Rainbow-Animation für Spezialeffekte */
+@keyframes rainbow {
+    0% {color: #ff0000;}
+    15% {color: #ff8000;}
+    30% {color: #ffff00;}
+    45% {color: #00ff00;}
+    60% {color: #0000ff;}
+    75% {color: #8000ff;}
+    90% {color: #ff00ff;}
+    100% {color: #ff0000;}
+}
+
+.rainbow-text {
+    animation: rainbow 5s linear infinite;
+}

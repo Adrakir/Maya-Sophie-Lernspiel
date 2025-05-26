@@ -1,0 +1,158 @@
+/* Extra Small Devices (Phones) */
+@media (max-width: 576px) {
+    .main-container {
+        padding: 1rem;
+    }
+
+    .card {
+        padding: 1rem;
+    }
+
+    .modal {
+        width: 95%;
+        padding: 1.5rem;
+    }
+
+    .character-selection {
+        gap: 1rem;
+    }
+
+    .character-card {
+        width: 100%;
+        padding: 1rem;
+    }
+
+    .character-image {
+        width: 100px;
+        height: 100px;
+    }
+
+    .story-box {
+        padding: 1.5rem;
+    }
+
+    .game-hub {
+        grid-template-columns: 1fr;
+    }
+
+    .kids-button {
+        padding: 0.7rem 1.2rem;
+        font-size: 1.1rem;
+    }
+
+    .btn {
+        padding: 0.6rem 1.2rem;
+    }
+
+    h1 {
+        font-size: 1.8rem;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+    }
+
+    .loading-logo img {
+        max-width: 150px;
+    }
+
+    .loading-progress {
+        width: 250px;
+    }
+}
+
+/* Small Devices (Tablets) */
+@media (min-width: 577px) and (max-width: 768px) {
+    .game-hub {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .character-selection {
+        justify-content: center;
+    }
+
+    .character-card {
+        width: 200px;
+    }
+}
+
+/* Medium Devices (Desktops) */
+@media (min-width: 769px) and (max-width: 992px) {
+    .game-hub {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+/* Large Devices (Large Desktops) */
+@media (min-width: 993px) {
+    .game-hub {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+/* Portrait Orientation (for Tablets and Phones) */
+@media (orientation: portrait) {
+    .character-selection {
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+/* Landscape Orientation (for Tablets and Phones) */
+@media (orientation: landscape) and (max-height: 600px) {
+    .main-container {
+        padding: 0.5rem;
+    }
+
+    .card {
+        margin-bottom: 1rem;
+    }
+
+    .loading-logo {
+        margin-bottom: 1rem;
+    }
+
+    .loading-logo img {
+        max-width: 120px;
+    }
+}
+
+/* High-DPI Devices */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    /* Optimierungen für hochauflösende Displays */
+    .character-image img, .story-image {
+        image-rendering: -webkit-optimize-contrast;
+    }
+}
+
+/* Hover nur für Geräte mit Hover-Unterstützung */
+@media (hover: hover) {
+    .character-card:hover {
+        transform: translateY(-10px);
+    }
+
+    .game-card:hover {
+        transform: translateY(-5px);
+    }
+
+    .btn:hover {
+        transform: translateY(-2px);
+    }
+}
+
+/* Keine Hover-Effekte für Touch-Geräte */
+@media (hover: none) {
+    .character-card:hover, .game-card:hover, .btn:hover {
+        transform: none;
+    }
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
