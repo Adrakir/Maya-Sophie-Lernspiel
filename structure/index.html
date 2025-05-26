@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maya & Sophie: Der Fluch der Hexe Crunella</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" href="assets/ui/favicon.png" type="image/png">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Haupt-App-Container -->
+    <div id="app">
+        <!-- Loading-Screen -->
+        <div id="loading-screen" class="loading-screen">
+            <div class="loading-container">
+                <div class="loading-logo">
+                    <img src="assets/ui/logo.png" alt="Maya & Sophie Logo" class="bounce">
+                </div>
+                <div class="loading-text">
+                    <h2>Maya & Sophie</h2>
+                    <h3>Der Fluch der Hexe Crunella</h3>
+                </div>
+                <div class="loading-progress">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="loading-progress-fill"></div>
+                    </div>
+                    <p id="loading-text">Lade Spielwelt...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sound-Steuerung -->
+    <div id="sound-control" class="sound-control">
+        <button id="toggle-sound" class="sound-button" aria-label="Sound ein/ausschalten">
+            <span class="sound-icon">🔊</span>
+        </button>
+    </div>
+
+    <!-- Hilfefunktion -->
+    <div id="help-button" class="help-button">
+        <button id="show-help" class="help-button-inner" aria-label="Hilfe anzeigen">
+            <span class="help-icon">❓</span>
+        </button>
+    </div>
+
+    <!-- Audio-Elemente -->
+    <audio id="background-music" loop>
+        <source src="assets/sounds/background-music.mp3" type="audio/mpeg">
+    </audio>
+    
+    <!-- JavaScript-Module -->
+    <script src="js/AudioManager.js"></script>
+    <script src="js/ContentData.js"></script>
+    <script src="js/UIManager.js"></script>
+    <script src="js/SaveLoadManager.js"></script>
+    <script src="js/StoryManager.js"></script>
+    <script src="js/ParentAreaManager.js"></script>
+    
+    <!-- Spielmodule -->
+    <script src="js/games/Game_AlphabetIntroduction.js"></script>
+    <script src="js/games/Game_LetterBingo.js"></script>
+    <script src="js/games/Game_SyllableClap.js"></script>
+    <script src="js/games/Game_TreasureHunt.js"></script>
+    <script src="js/games/Game_InteractiveStory.js"></script>
+    <script src="js/games/Game_Blitzwoerter.js"></script>
+    <script src="js/games/Game_Wortpaare.js"></script>
+    <script src="js/games/Game_LeseWuerfel.js"></script>
+    <script src="js/games/Game_Wortkette.js"></script>
+    <script src="js/games/Game_Buecherwurm.js"></script>
+    <script src="js/games/Game_Wortgitter.js"></script>
+    <script src="js/games/Game_LueckentextMaus.js"></script>
+    <script src="js/games/Game_RaetselGeschichte.js"></script>
+    <script src="js/games/Game_PictureStory.js"></script>
+    
+    <!-- Hauptspiellogik -->
+    <script src="js/GameManager.js"></script>
+    
+    <!-- Initialisierung -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Ladebildschirm mit Animation
+            let progress = 0;
+            const loadingInterval = setInterval(() => {
+                progress += Math.random() * 10;
+                if (progress >= 100) {
+                    progress = 100;
+                    clearInterval(loadingInterval);
+                    setTimeout(() => {
+                        document.getElementById('loading-screen').style.opacity = '0';
+                        setTimeout(() => {
+                            document.getElementById('loading-screen').style.display = 'none';
+                            GameManager.init();
+                        }, 500);
+                    }, 800);
+                }
+                document.getElementById('loading-progress-fill').style.width = `${progress}%`;
+                document.getElementById('loading-text').textContent = `Lade Spielwelt... ${Math.floor(progress)}%`;
+            }, 200);
+            
+            // Sound-Button einrichten
+            document.getElementById('toggle-sound').addEventListener('click', function() {
+                AudioManager.toggleSound();
+                this.querySelector('.sound-icon').textContent = AudioManager.isMuted() ? '🔇' : '🔊';
+            });
+            
+            // Hilfe-Button einrichten
+            document.getElementById('show-help').addEventListener('click', function() {
+                GameManager.showGameHelp();
+            });
+        });
+    </script>
+</body>
+</html>
