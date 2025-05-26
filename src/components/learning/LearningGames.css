@@ -1,0 +1,101 @@
+.learning-game {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: 'Comfortaa', sans-serif;
+}
+
+.learning-game h2 {
+  text-align: center;
+  color: #ff69b4;
+  margin-bottom: 25px;
+  font-size: 2rem;
+  font-family: 'Bubblegum Sans', cursive;
+}
+
+.level-selector, .game-mode-selector {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.level-selector p, .game-mode-selector p {
+  margin-bottom: 10px;
+  font-weight: 500;
+  color: #555;
+}
+
+.level-buttons, .mode-buttons {
+  display: flex;
+  gap: 15px;
+}
+
+.level-button, .mode-button {
+  padding: 8px 20px;
+  border: 2px solid #ddd;
+  background-color: #f5f5f5;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.3s;
+}
+
+.level-button:hover, .mode-button:hover {
+  background-color: #e6e6e6;
+}
+
+.level-button.active, .mode-button.active {
+  background-color: #ff69b4;
+  border-color: #ff69b4;
+  color: white;
+}
+
+.game-progress {
+  margin-bottom: 20px;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 12px;
+  background-color: #f0f0f0;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 5px;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #ff69b4, #ff8cc8);
+  transition: width 0.5s ease;
+}
+
+.game-progress p {
+  text-align: right;
+  font-size: 0.9rem;
+  color: #777;
+}
+
+.game-score {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.game-score p {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #ff69b4;
+}
+
+.question-container {
+  background-color: white;
+  border-radius: 15px;
+  padding: 25px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.05);
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.question {
+  font-size: 1.5rem;
+  margin-bottom: 20px
