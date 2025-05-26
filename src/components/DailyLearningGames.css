@@ -1,0 +1,129 @@
+.daily-learning-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  position: relative;
+}
+
+.learning-title {
+  text-align: center;
+  font-size: 2.5rem;
+  margin-bottom: 30px;
+  color: #ff69b4;
+  background: linear-gradient(45deg, #ff69b4, #9370db);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.daily-tip {
+  background-color: #fff9e0;
+  border-radius: 15px;
+  padding: 20px;
+  margin-bottom: 40px;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.05);
+  border-left: 5px solid #ffde59;
+}
+
+.tip-icon {
+  font-size: 2.5rem;
+  margin-right: 20px;
+}
+
+.daily-tip p {
+  font-size: 1.1rem;
+  color: #555;
+}
+
+.learning-games-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
+  margin-top: 20px;
+}
+
+.learning-game-card {
+  background: linear-gradient(135deg, #ffffff 0%, #f5f7fa 100%);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s, box-shadow 0.3s;
+  position: relative;
+  height: 100%;
+}
+
+.learning-game-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+}
+
+.game-card-content {
+  padding: 30px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.game-icon {
+  font-size: 3.5rem;
+  margin-bottom: 20px;
+}
+
+.learning-game-card h3 {
+  font-size: 1.6rem;
+  margin-bottom: 15px;
+  color: #ff69b4;
+}
+
+.learning-game-card:nth-child(2) h3 {
+  color: #64b5f6;
+}
+
+.learning-game-card:nth-child(3) h3 {
+  color: #66bb6a;
+}
+
+.learning-game-card p {
+  color: #555;
+  margin-bottom: 30px;
+  flex-grow: 1;
+}
+
+.selected-game-container {
+  width: 100%;
+}
+
+.back-button {
+  background-color: #f0f0f0;
+  color: #333;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 25px;
+  display: inline-flex;
+  align-items: center;
+  margin-bottom: 20px;
+  font-weight: bold;
+  transition: background-color 0.3s;
+}
+
+.back-button:hover {
+  background-color: #e0e0e0;
+}
+
+@media (max-width: 768px) {
+  .learning-games-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .daily-tip {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .tip-icon {
+    margin-right: 0;
+    margin-bottom: 15px;
+  }
+}

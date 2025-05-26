@@ -1,0 +1,422 @@
+.reading-learning-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: 'Comfortaa', sans-serif;
+}
+
+.reading-title {
+  text-align: center;
+  font-size: 2.5rem;
+  margin-bottom: 15px;
+  color: var(--primary-color);
+  font-family: 'Bubblegum Sans', cursive;
+  position: relative;
+  display: inline-block;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 0 20px;
+}
+
+.reading-title::before,
+.reading-title::after {
+  content: "📚";
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 2rem;
+}
+
+.reading-title::before {
+  left: -15px;
+}
+
+.reading-title::after {
+  right: -15px;
+}
+
+.reading-intro {
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto 40px;
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  background-color: var(--background-card);
+  padding: 20px;
+  border-radius: var(--border-radius-medium);
+  box-shadow: var(--shadow-soft);
+  border-left: 4px solid var(--primary-color);
+}
+
+.reading-games-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 30px;
+  margin-bottom: 50px;
+}
+
+.reading-game-card {
+  background: linear-gradient(135deg, var(--background-card) 0%, #f5f7fa 100%);
+  border-radius: var(--border-radius-large);
+  overflow: hidden;
+  box-shadow: var(--shadow-medium);
+  transition: transform 0.3s, box-shadow 0.3s;
+  height: 100%;
+  position: relative;
+}
+
+.reading-game-card:nth-child(1) {
+  border-top: 5px solid #8e44ad;
+}
+
+.reading-game-card:nth-child(2) {
+  border-top: 5px solid #ba68c8;
+}
+
+.reading-game-card:nth-child(3) {
+  border-top: 5px solid #64b5f6;
+}
+
+.reading-game-card:nth-child(4) {
+  border-top: 5px solid #ff8a65;
+}
+
+.reading-game-card:nth-child(5) {
+  border-top: 5px solid #4caf50;
+}
+
+.reading-game-card:nth-child(6) {
+  border-top: 5px solid #66bb6a;
+}
+
+.reading-game-card:hover {
+  transform: translateY(-10px);
+  box-shadow: var(--shadow-strong);
+}
+
+.game-card-content {
+  padding: 30px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.game-icon {
+  font-size: 3.5rem;
+  margin-bottom: 20px;
+  animation: float 3s ease-in-out infinite;
+}
+
+.reading-game-card:nth-child(1) .game-icon {
+  color: #8e44ad;
+}
+
+.reading-game-card:nth-child(2) .game-icon {
+  color: #ba68c8;
+}
+
+.reading-game-card:nth-child(3) .game-icon {
+  color: #64b5f6;
+}
+
+.reading-game-card:nth-child(4) .game-icon {
+  color: #ff8a65;
+}
+
+.reading-game-card:nth-child(5) .game-icon {
+  color: #4caf50;
+}
+
+.reading-game-card:nth-child(6) .game-icon {
+  color: #66bb6a;
+}
+
+.reading-game-card h3 {
+  font-size: 1.6rem;
+  margin-bottom: 15px;
+  font-family: 'Bubblegum Sans', cursive;
+}
+
+.reading-game-card:nth-child(1) h3 {
+  color: #8e44ad;
+}
+
+.reading-game-card:nth-child(2) h3 {
+  color: #ba68c8;
+}
+
+.reading-game-card:nth-child(3) h3 {
+  color: #64b5f6;
+}
+
+.reading-game-card:nth-child(4) h3 {
+  color: #ff8a65;
+}
+
+.reading-game-card:nth-child(5) h3 {
+  color: #4caf50;
+}
+
+.reading-game-card:nth-child(6) h3 {
+  color: #66bb6a;
+}
+
+.reading-game-card p {
+  color: var(--text-secondary);
+  margin-bottom: 30px;
+  flex-grow: 1;
+  line-height: 1.5;
+}
+
+.reading-game-card .kids-button {
+  align-self: center;
+}
+
+.reading-game-card:nth-child(1) .kids-button {
+  background-color: #8e44ad;
+  border-color: #6c3483;
+  box-shadow: 0 6px 0 #6c3483;
+  color: white;
+}
+
+.reading-game-card:nth-child(1) .kids-button:hover {
+  background-color: #9b59b6;
+}
+
+.reading-game-card:nth-child(1) .kids-button:active {
+  box-shadow: 0 2px 0 #6c3483;
+}
+
+.reading-game-card:nth-child(2) .kids-button {
+  background-color: #ba68c8;
+  border-color: #9c27b0;
+  box-shadow: 0 6px 0 #9c27b0;
+  color: white;
+}
+
+.reading-game-card:nth-child(2) .kids-button:hover {
+  background-color: #ce93d8;
+}
+
+.reading-game-card:nth-child(2) .kids-button:active {
+  box-shadow: 0 2px 0 #9c27b0;
+}
+
+.reading-game-card:nth-child(3) .kids-button {
+  background-color: #64b5f6;
+  border-color: #2196f3;
+  box-shadow: 0 6px 0 #2196f3;
+  color: white;
+}
+
+.reading-game-card:nth-child(3) .kids-button:hover {
+  background-color: #90caf9;
+}
+
+.reading-game-card:nth-child(3) .kids-button:active {
+  box-shadow: 0 2px 0 #2196f3;
+}
+
+.reading-game-card:nth-child(4) .kids-button {
+  background-color: #ff8a65;
+  border-color: #ff5722;
+  box-shadow: 0 6px 0 #ff5722;
+  color: white;
+}
+
+.reading-game-card:nth-child(4) .kids-button:hover {
+  background-color: #ffab91;
+}
+
+.reading-game-card:nth-child(4) .kids-button:active {
+  box-shadow: 0 2px 0 #ff5722;
+}
+
+.reading-game-card:nth-child(5) .kids-button {
+  background-color: #4caf50;
+  border-color: #388e3c;
+  box-shadow: 0 6px 0 #388e3c;
+  color: white;
+}
+
+.reading-game-card:nth-child(5) .kids-button:hover {
+  background-color: #81c784;
+}
+
+.reading-game-card:nth-child(5) .kids-button:active {
+  box-shadow: 0 2px 0 #388e3c;
+}
+
+.reading-game-card:nth-child(6) .kids-button {
+  background-color: #66bb6a;
+  border-color: #4caf50;
+  box-shadow: 0 6px 0 #4caf50;
+  color: white;
+}
+
+.reading-game-card:nth-child(6) .kids-button:hover {
+  background-color: #a5d6a7;
+}
+
+.reading-game-card:nth-child(6) .kids-button:active {
+  box-shadow: 0 2px 0 #4caf50;
+}
+
+.reading-progress {
+  background-color: var(--background-card);
+  padding: 30px;
+  border-radius: var(--border-radius-medium);
+  margin-bottom: 40px;
+  box-shadow: var(--shadow-medium);
+  border-top: 5px solid var(--primary-color);
+}
+
+.reading-progress h3 {
+  color: var(--primary-color);
+  text-align: center;
+  margin-bottom: 15px;
+  font-family: 'Bubblegum Sans', cursive;
+}
+
+.reading-progress p {
+  text-align: center;
+  margin-bottom: 25px;
+  color: var(--text-secondary);
+}
+
+.progress-path {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.progress-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  width: 120px;
+}
+
+.step-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: var(--primary-color);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.progress-step:nth-child(1) .step-icon {
+  background-color: #8e44ad;
+}
+
+.progress-step:nth-child(3) .step-icon {
+  background-color: #ba68c8;
+}
+
+.progress-step:nth-child(5) .step-icon {
+  background-color: #64b5f6;
+}
+
+.progress-step:nth-child(7) .step-icon {
+  background-color: #ff8a65;
+}
+
+.progress-step:nth-child(9) .step-icon {
+  background-color: #4caf50;
+}
+
+.progress-step:nth-child(11) .step-icon {
+  background-color: #66bb6a;
+}
+
+.progress-step p {
+  font-size: 0.9rem;
+  margin: 0;
+  color: var(--text-secondary);
+}
+
+.progress-arrow {
+  color: #ccc;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.reading-tips {
+  background-color: #fff0f5;
+  padding: 30px;
+  border-radius: var(--border-radius-medium);
+  border-left: 5px solid var(--primary-color);
+  margin-bottom: 30px;
+  box-shadow: var(--shadow-medium);
+}
+
+.reading-tips h3 {
+  color: var(--primary-color);
+  margin-bottom: 15px;
+  font-family: 'Bubblegum Sans', cursive;
+}
+
+.reading-tips ul {
+  margin-left: 20px;
+  color: var(--text-secondary);
+}
+
+.reading-tips li {
+  margin-bottom: 10px;
+  line-height: 1.5;
+}
+
+.selected-game-container {
+  width: 100%;
+}
+
+.back-button {
+  background-color: #f0f0f0;
+  color: #333;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 25px;
+  display: inline-flex;
+  align-items: center;
+  margin-bottom: 20px;
+  font-weight: bold;
+  transition: background-color 0.3s;
+}
+
+.back-button:hover {
+  background-color: #e0e0e0;
+}
+
+@media (max-width: 768px) {
+  .reading-games-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .progress-path {
+    flex-direction: column;
+  }
+  
+  .progress-arrow {
+    transform: rotate(90deg);
+  }
+  
+  .reading-title {
+    font-size: 2rem;
+  }
+  
+  .reading-title::before,
+  .reading-title::after {
+    display: none;
+  }
+}
