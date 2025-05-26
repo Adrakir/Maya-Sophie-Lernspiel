@@ -1,4 +1,4 @@
-k# Maya & Sophie: Der Fluch der Hexe Crunella
+Maya & Sophie: Der Fluch der Hexe Crunella
 
 ![Maya & Sophie Logo](assets/ui/logo.png)
 
