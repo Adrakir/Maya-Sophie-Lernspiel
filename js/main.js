@@ -1,348 +1,617 @@
-// Hauptfunktionalität für Maya & Sophie: Der Fluch der Hexe Crunella
+/**
+ * Maya-Sophie Lernspiel - Hauptanwendung
+ * Koordiniert alle Spielkomponenten und verwaltet den Anwendungsfluss
+ */
 
-// Spielmodule und ihre Inhalte
-const gameModules = [
-    { id: 'alphabet', name: 'Alphabeteinführung', description: 'Lerne das Alphabet kennen', difficulty: 1 },
-    { id: 'bingo', name: 'Buchstaben-Bingo', description: 'Finde die Buchstaben auf deiner Bingo-Karte', difficulty: 1 },
-    { id: 'syllables', name: 'Silbenklatschen', description: 'Klatsche im Rhythmus der Silben', difficulty: 2 },
-    { id: 'treasure', name: 'Schatzsuche', description: 'Suche nach versteckten Buchstaben und Wörtern', difficulty: 2 },
-    { id: 'story', name: 'Interaktive Geschichte', description: 'Hilf Maya und Sophie, die Geschichte zu vervollständigen', difficulty: 3 },
-    { id: 'flash', name: 'Blitzwörter', description: 'Wie schnell kannst du die Wörter lesen?', difficulty: 3 },
-    { id: 'pairs', name: 'Wortpaare', description: 'Finde die passenden Reimwörter', difficulty: 2 },
-    { id: 'dice', name: 'Lesewürfel', description: 'Würfle und lies die Wörter', difficulty: 3 },
-    { id: 'chain', name: 'Wortkette', description: 'Bilde eine Kette aus Wörtern', difficulty: 4 },
-    { id: 'bookworm', name: 'Bücherwurm', description: 'Hilf dem Bücherwurm durch die Bücher zu kriechen', difficulty: 4 },
-    { id: 'grid', name: 'Wortgitter', description: 'Finde Wörter im Buchstabengitter', difficulty: 4 },
-    { id: 'mouse', name: 'Lückentext Maus', description: 'Ergänze die fehlenden Wörter', difficulty: 4 },
-    { id: 'picture', name: 'Bildergeschichte', description: 'Erzähle deine eigene Geschichte zu den Bildern', difficulty: 3 },
-    { id: 'puzzle', name: 'Rätselgeschichte', description: 'Löse das Rätsel, um die Geschichte fortzusetzen', difficulty: 4 },
-    { id: 'search', name: 'Bildersuche', description: 'Finde die versteckten Gegenstände im Bild', difficulty: 2 },
-    { id: 'balloon', name: 'Ballonschießen', description: 'Schieße auf die Ballons mit den richtigen Buchstaben', difficulty: 3 },
-    { id: 'vowels', name: 'Vokalsammler', description: 'Sammle alle Vokale in den Wörtern', difficulty: 2 }
-];
-
-// Tutorial-Inhalte
-const tutorialPages = [
-    {
-        title: "Willkommen bei Maya & Sophie!",
-        content: `
-            <div class="tutorial-page">
-                <img src="assets/tutorial/welcome.png" alt="Willkommen" style="width: 100%; max-width: 400px; display: block; margin: 0 auto 20px auto;">
-                <p>Hallo! Wir sind Maya und Sophie und wir brauchen deine Hilfe!</p>
-                <p>Die böse Hexe Crunella hat einen Fluch über unser Dorf gelegt, und nur du kannst uns helfen, ihn zu brechen!</p>
-                <p>In diesem Spiel wirst du 17 spannende Abenteuer erleben, die dir beim Lesen und Schreiben helfen werden.</p>
-            </div>
-        `
-    },
-    {
-        title: "So spielst du",
-        content: `
-            <div class="tutorial-page">
-                <img src="assets/tutorial/howtoplay.png" alt="Spielanleitung" style="width: 100%; max-width: 400px; display: block; margin: 0 auto 20px auto;">
-                <p>Um zu spielen, wähle einfach eines der 17 Spiele aus dem Hauptmenü.</p>
-                <p>Jedes Spiel hat seine eigenen Regeln, aber keine Sorge - Maya und Sophie werden dir alles erklären!</p>
-                <p>Sammle Punkte, indem du die Spiele meisterst, und hilf uns, den Fluch zu brechen!</p>
-            </div>
-        `
-    },
-    {
-        title: "Hilfe bekommen",
-        content: `
-            <div class="tutorial-page">
-                <img src="assets/tutorial/help.png" alt="Hilfe" style="width: 100%; max-width: 400px; display: block; margin: 0 auto 20px auto;">
-                <p>Brauchst du Hilfe? Kein Problem!</p>
-                <p>Klicke einfach auf den Hilfe-Button (?) in jedem Spiel, und wir werden dir erklären, was zu tun ist.</p>
-                <p>Du kannst auch jederzeit zum Hauptmenü zurückkehren, indem du auf den Zurück-Button klickst.</p>
-            </div>
-        `
+class MayaSophieGame {
+    constructor() {
+        this.currentDay = 1;
+        this.maxDays = 35;
+        this.currentScreen = 'loading';
+        this.initialized = false;
+        
+        // Manager-Instanzen
+        this.audioManager = new AudioManager();
+        this.saveManager = new SaveManager();
+        this.storyManager = new StoryManager();
+        this.gameEngine = new GameEngine();
+        this.parentArea = new ParentArea();
+        this.ui = new UIManager();
+        
+        this.init();
     }
-];
-
-// Kinderhandbuch
-const kidsManual = `
-<div class="kids-manual">
-    <h2>Maya & Sophie: Der Fluch der Hexe Crunella</h2>
-    <h3>Handbuch für Kinder</h3>
     
-    <div class="manual-section">
-        <h4>Hallo, liebe Kinder!</h4>
-        <p>Wir sind Maya und Sophie, und wir brauchen eure Hilfe! Die böse Hexe Crunella hat einen Fluch über unser Dorf gelegt. Nur mit eurer Hilfe können wir den Fluch brechen!</p>
-    </div>
-    
-    <div class="manual-section">
-        <h4>So spielt ihr:</h4>
-        <ol>
-            <li><strong>Klickt auf "Spiel starten"</strong> um die Abenteuer zu beginnen!</li>
-            <li><strong>Wählt ein Spiel aus</strong> - es gibt 17 verschiedene Spiele!</li>
-            <li><strong>Folgt den Anweisungen</strong> in jedem Spiel</li>
-            <li><strong>Sammelt Punkte und Belohnungen</strong> für jedes abgeschlossene Spiel</li>
-            <li><strong>Brecht den Fluch</strong> indem ihr alle Spiele meistert!</li>
-        </ol>
-    </div>
-    
-    <div class="manual-section">
-        <h4>Unsere Spiele:</h4>
-        <ul>
-            <li><strong>🔤 Alphabeteinführung</strong><br>Lernt das Alphabet kennen! Klickt auf die Buchstaben, um ihren Laut zu hören.</li>
-            <li><strong>🎮 Buchstaben-Bingo</strong><br>Findet die Buchstaben auf eurer Bingo-Karte! Schafft ihr es, eine Reihe zu vervollständigen?</li>
-            <!-- Weitere Spiele hier... -->
-        </ul>
-    </div>
-    
-    <div class="manual-section">
-        <h4>Wenn ihr Hilfe braucht:</h4>
-        <ul>
-            <li>Klickt auf den <strong>Hilfe-Button (?)</strong> in jedem Spiel</li>
-            <li>Fragt Maya und Sophie - sie geben euch Tipps!</li>
-            <li>Schaut euch das <strong>Tutorial</strong> an, bevor ihr startet</li>
-        </ul>
-    </div>
-    
-    <div class="manual-section">
-        <h4>Viel Spaß beim Spielen und Lernen!</h4>
-        <p>Eure Freunde,<br>Maya und Sophie</p>
-    </div>
-</div>
-`;
-
-// Elternhandbuch (gekürzt für Übersichtlichkeit)
-const parentsManual = `
-<div class="parents-manual">
-    <h2>Maya & Sophie: Der Fluch der Hexe Crunella</h2>
-    <h3>Handbuch für Eltern und Pädagogen</h3>
-    
-    <div class="manual-section">
-        <h4>Einführung</h4>
-        <p>"Maya & Sophie: Der Fluch der Hexe Crunella" ist ein interaktives Lernspiel für Kinder im Grundschulalter, das spielerisch Lese- und Schreibkompetenzen fördert. Eingebettet in eine spannende Geschichte rund um die Figuren Maya und Sophie, absolvieren die Kinder verschiedene Lernspiele, um den "Fluch" der Hexe Crunella zu brechen.</p>
-    </div>
-    
-    <div class="manual-section">
-        <h4>Pädagogisches Konzept</h4>
-        <p>Das Spiel basiert auf einem ganzheitlichen Ansatz zur Sprachförderung, der folgende Bereiche umfasst:</p>
-        <ul>
-            <li><strong>Phonologische Bewusstheit</strong>: Erkennen und Unterscheiden von Lauten</li>
-            <li><strong>Buchstabenkenntnis</strong>: Erlernen von Buchstaben und deren Lauten</li>
-            <li><strong>Wortschatz</strong>: Erweiterung des aktiven und passiven Wortschatzes</li>
-            <li><strong>Lesekompetenz</strong>: Vom Buchstabieren bis zum flüssigen Lesen</li>
-            <li><strong>Schreibkompetenz</strong>: Vom Buchstaben zum Wort und Satz</li>
-        </ul>
-    </div>
-    
-    <!-- Weitere Abschnitte hier... -->
-</div>
-`;
-
-// Spieleinrichtung
-document.addEventListener('DOMContentLoaded', function() {
-    // Elemente
-    const startButton = document.getElementById('start-game');
-    const tutorialButton = document.getElementById('tutorial-btn');
-    const helpButton = document.getElementById('help-btn');
-    const manualButton = document.getElementById('manual-btn');
-    const mainMenu = document.getElementById('main-menu');
-    const gameContent = document.getElementById('game-content');
-    const tutorialContainer = document.getElementById('tutorial-container');
-    const helpContainer = document.getElementById('help-container');
-    const manualContainer = document.getElementById('manual-container');
-    const closeButtons = document.querySelectorAll('.close-btn');
-    const prevButton = document.getElementById('prev-btn');
-    const nextButton = document.getElementById('next-btn');
-    const tutorialContent = document.getElementById('tutorial-content');
-    const helpContent = document.getElementById('help-content');
-    const tabButtons = document.querySelectorAll('.tab-btn');
-    const kidsManualContent = document.getElementById('kids-manual');
-    const parentsManualContent = document.getElementById('parents-manual');
-    
-    // Variablen
-    let currentTutorialPage = 0;
-    
-    // Event-Listener
-    startButton.addEventListener('click', showGameMenu);
-    tutorialButton.addEventListener('click', showTutorial);
-    helpButton.addEventListener('click', showHelp);
-    manualButton.addEventListener('click', showManual);
-    
-    // Close-Buttons
-    closeButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            this.parentElement.parentElement.style.display = 'none';
-        });
-    });
-    
-    // Tutorial-Navigation
-    prevButton.addEventListener('click', showPreviousTutorialPage);
-    nextButton.addEventListener('click', showNextTutorialPage);
-    
-    // Tab-Wechsel
-    tabButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            const tab = this.getAttribute('data-tab');
+    async init() {
+        console.log('🎮 Maya-Sophie Lernspiel wird geladen...');
+        
+        try {
+            // Ladefortschritt anzeigen
+            this.updateLoadingProgress(10, 'Lade Spieleinstellungen...');
             
-            // Aktiven Tab markieren
-            tabButtons.forEach(btn => btn.classList.remove('active'));
-            this.classList.add('active');
+            // Spielstand laden
+            await this.saveManager.loadGameState();
+            this.currentDay = this.saveManager.getCurrentDay();
             
-            // Entsprechenden Inhalt anzeigen
-            if (tab === 'kids') {
-                kidsManualContent.style.display = 'block';
-                parentsManualContent.style.display = 'none';
-            } else {
-                kidsManualContent.style.display = 'none';
-                parentsManualContent.style.display = 'block';
-            }
-        });
-    });
+            this.updateLoadingProgress(30, 'Lade Geschichten...');
+            
+            // Inhalte laden
+            await this.storyManager.loadStories();
+            
+            this.updateLoadingProgress(50, 'Lade Spiele...');
+            
+            // Spiele initialisieren
+            await this.gameEngine.init();
+            
+            this.updateLoadingProgress(70, 'Lade Audio...');
+            
+            // Audio-System initialisieren
+            await this.audioManager.init();
+            
+            this.updateLoadingProgress(90, 'Bereite Benutzeroberfläche vor...');
+            
+            // Event Listeners einrichten
+            this.setupEventListeners();
+            
+            // UI initialisieren
+            this.ui.init();
+            
+            this.updateLoadingProgress(100, 'Fertig!');
+            
+            // Nach kurzer Verzögerung zum Hauptmenü wechseln
+            setTimeout(() => {
+                this.showMainMenu();
+                this.initialized = true;
+                console.log('✅ Spiel erfolgreich geladen!');
+            }, 1000);
+            
+        } catch (error) {
+            console.error('❌ Fehler beim Laden des Spiels:', error);
+            this.showError('Fehler beim Laden des Spiels. Bitte versuche es erneut.');
+        }
+    }
     
-    // Handbuch-Inhalte laden
-    kidsManualContent.innerHTML = kidsManual;
-    parentsManualContent.innerHTML = parentsManual;
+    updateLoadingProgress(percent, message) {
+        const progressBar = document.getElementById('loadingProgress');
+        const loadingText = document.querySelector('.loading-content h2');
+        
+        if (progressBar) {
+            progressBar.style.width = `${percent}%`;
+        }
+        
+        if (loadingText && message) {
+            loadingText.textContent = message;
+        }
+    }
     
-    // Funktionen
-    function showGameMenu() {
-        mainMenu.style.display = 'none';
-        gameContent.style.display = 'block';
-        
-        // Spielmodule anzeigen
-        let html = '<h2>Wähle ein Spiel</h2><div class="game-grid">';
-        
-        gameModules.forEach(module => {
-            const stars = '⭐'.repeat(module.difficulty);
-            html += `
-                <div class="game-card" data-id="${module.id}">
-                    <h3>${module.name}</h3>
-                    <p>${module.description}</p>
-                    <div class="difficulty">${stars}</div>
-                </div>
-            `;
+    setupEventListeners() {
+        // Hauptmenü-Events
+        document.getElementById('startStoryBtn')?.addEventListener('click', () => {
+            this.startDailyStory();
         });
         
-        html += '</div><button id="back-to-menu">Zurück zum Hauptmenü</button>';
-        gameContent.innerHTML = html;
+        document.getElementById('gamesBtn')?.addEventListener('click', () => {
+            this.showGamesScreen();
+        });
         
-        // Event-Listener für Spielauswahl
-        document.querySelectorAll('.game-card').forEach(card => {
-            card.addEventListener('click', function() {
-                const gameId = this.getAttribute('data-id');
-                startGame(gameId);
+        document.getElementById('parentAreaBtn')?.addEventListener('click', () => {
+            this.showParentArea();
+        });
+        
+        document.getElementById('settingsBtn')?.addEventListener('click', () => {
+            this.showSettings();
+        });
+        
+        document.getElementById('helpBtn')?.addEventListener('click', () => {
+            this.showHelp();
+        });
+        
+        // Zurück-Buttons
+        document.querySelectorAll('.back-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                this.showMainMenu();
             });
         });
         
-        // Zurück-Button
-        document.getElementById('back-to-menu').addEventListener('click', function() {
-            gameContent.style.display = 'none';
-            mainMenu.style.display = 'flex';
+        // Story-Navigation
+        document.getElementById('nextStoryBtn')?.addEventListener('click', () => {
+            this.storyManager.nextStoryPart();
+        });
+        
+        document.getElementById('prevStoryBtn')?.addEventListener('click', () => {
+            this.storyManager.prevStoryPart();
+        });
+        
+        document.getElementById('completeStoryBtn')?.addEventListener('click', () => {
+            this.completeStory();
+        });
+        
+        // Audio-Controls
+        document.getElementById('storyAudioBtn')?.addEventListener('click', () => {
+            this.audioManager.playStoryAudio();
+        });
+        
+        document.getElementById('storyPauseBtn')?.addEventListener('click', () => {
+            this.audioManager.pauseAudio();
+        });
+        
+        // Spiele-Events
+        document.querySelectorAll('.game-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const gameType = e.currentTarget.dataset.game;
+                this.startGame(gameType);
+            });
+        });
+        
+        // Einstellungen
+        this.setupSettingsListeners();
+        
+        // Keyboard-Navigation
+        document.addEventListener('keydown', (e) => {
+            this.handleKeyboardInput(e);
+        });
+        
+        // Auto-Save
+        setInterval(() => {
+            if (this.initialized) {
+                this.saveManager.autoSave();
+            }
+        }, 30000); // Alle 30 Sekunden
+    }
+    
+    setupSettingsListeners() {
+        // Lautstärke
+        document.getElementById('masterVolume')?.addEventListener('input', (e) => {
+            const volume = e.target.value / 100;
+            this.audioManager.setMasterVolume(volume);
+            document.getElementById('volumeDisplay').textContent = `${e.target.value}%`;
+        });
+        
+        // Musik an/aus
+        document.getElementById('musicEnabled')?.addEventListener('change', (e) => {
+            this.audioManager.setMusicEnabled(e.target.checked);
+        });
+        
+        // Soundeffekte an/aus
+        document.getElementById('soundEffects')?.addEventListener('change', (e) => {
+            this.audioManager.setSoundEffectsEnabled(e.target.checked);
+        });
+        
+        // Textgröße
+        document.getElementById('textSize')?.addEventListener('change', (e) => {
+            this.setTextSize(e.target.value);
+        });
+        
+        // Fortschritt zurücksetzen
+        document.getElementById('resetProgressBtn')?.addEventListener('click', () => {
+            this.resetProgress();
+        });
+        
+        // Daten exportieren
+        document.getElementById('exportDataBtn')?.addEventListener('click', () => {
+            this.exportGameData();
         });
     }
     
-    function startGame(gameId) {
-        const game = gameModules.find(g => g.id === gameId);
-        if (!game) return;
+    showMainMenu() {
+        this.hideAllScreens();
+        document.getElementById('mainMenu').classList.remove('hidden');
+        this.currentScreen = 'menu';
         
-        // Hier würde die eigentliche Spiellogik starten
-        gameContent.innerHTML = `
-            <div class="game-header">
-                <button id="back-to-games">Zurück zur Spielauswahl</button>
-                <h2>${game.name}</h2>
-                <button id="game-help">?</button>
-            </div>
-            <div class="game-area">
-                <p>Das Spiel "${game.name}" wird hier angezeigt.</p>
-                <p>Schwierigkeitsgrad: ${'⭐'.repeat(game.difficulty)}</p>
-                <div class="placeholder-content">
-                    <p>In diesem Spiel kannst du ${game.description.toLowerCase()}.</p>
-                    <p>Folge den Anweisungen auf dem Bildschirm, um zu spielen!</p>
-                </div>
-            </div>
-        `;
+        // Aktuellen Tag anzeigen
+        document.getElementById('currentDay').textContent = `Tag ${this.currentDay} von ${this.maxDays}`;
         
-        // Event-Listener für Zurück-Button
-        document.getElementById('back-to-games').addEventListener('click', showGameMenu);
+        // Fortschritt aktualisieren
+        this.updateProgressDisplay();
         
-        // Event-Listener für Hilfe-Button
-        document.getElementById('game-help').addEventListener('click', function() {
-            showGameHelp(gameId);
-        });
+        // Hintergrundmusik starten
+        this.audioManager.playBackgroundMusic('main-theme');
+        
+        // Willkommensnachricht anpassen
+        this.updateWelcomeMessage();
     }
     
-    function showTutorial() {
-        currentTutorialPage = 0;
-        updateTutorialContent();
-        tutorialContainer.style.display = 'flex';
-    }
-    
-    function updateTutorialContent() {
-        const page = tutorialPages[currentTutorialPage];
-        tutorialContent.innerHTML = `
-            <h3>${page.title}</h3>
-            ${page.content}
-            <div class="page-indicator">Seite ${currentTutorialPage + 1} von ${tutorialPages.length}</div>
-        `;
+    updateWelcomeMessage() {
+        const welcomeEl = document.getElementById('welcomeMessage');
+        const h2 = welcomeEl.querySelector('h2');
         
-        // Button-Status aktualisieren
-        prevButton.disabled = currentTutorialPage === 0;
-        nextButton.textContent = currentTutorialPage === tutorialPages.length - 1 ? 'Fertig' : 'Weiter';
-    }
-    
-    function showPreviousTutorialPage() {
-        if (currentTutorialPage > 0) {
-            currentTutorialPage--;
-            updateTutorialContent();
-        }
-    }
-    
-    function showNextTutorialPage() {
-        if (currentTutorialPage < tutorialPages.length - 1) {
-            currentTutorialPage++;
-            updateTutorialContent();
+        const progress = this.saveManager.getProgress();
+        const completedStories = progress.completedStories || 0;
+        
+        if (completedStories === 0) {
+            h2.textContent = 'Willkommen bei Maya & Sophie!';
+        } else if (completedStories < 10) {
+            h2.textContent = 'Schön, dass du wieder da bist!';
+        } else if (completedStories < 25) {
+            h2.textContent = 'Du machst tolle Fortschritte!';
+        } else if (completedStories < 35) {
+            h2.textContent = 'Du bist fast am Ziel!';
         } else {
-            tutorialContainer.style.display = 'none';
+            h2.textContent = 'Herzlichen Glückwunsch!';
         }
     }
     
-    function showHelp() {
-        helpContent.innerHTML = `
-            <div class="help-section">
-                <h3>Allgemeine Hilfe</h3>
-                <p>Willkommen beim "Maya & Sophie: Der Fluch der Hexe Crunella" Lernspiel!</p>
-                <p>So navigierst du durch das Spiel:</p>
-                <ul>
-                    <li>Klicke auf <strong>Spiel starten</strong>, um die verfügbaren Spiele zu sehen.</li>
-                    <li>Wähle eines der 17 Spiele aus, indem du auf die Spielkarte klickst.</li>
-                    <li>Folge den Anweisungen im Spiel, um zu lernen und Punkte zu sammeln.</li>
-                    <li>Du kannst jederzeit zum Hauptmenü zurückkehren.</li>
-                </ul>
-                <p>Wenn du weitere Hilfe benötigst, klicke auf den Hilfe-Button (?) in jedem Spiel.</p>
-            </div>
-        `;
-        helpContainer.style.display = 'flex';
-    }
-    
-    function showGameHelp(gameId) {
-        const game = gameModules.find(g => g.id === gameId);
-        if (!game) return;
+    updateProgressDisplay() {
+        const progress = this.saveManager.getProgress();
+        const starsContainer = document.getElementById('progressStars');
+        const progressText = document.getElementById('progressText');
         
-        helpContent.innerHTML = `
-            <div class="help-section">
-                <h3>Hilfe für ${game.name}</h3>
-                <p>${game.description}</p>
-                <h4>So spielst du:</h4>
+        // Sterne generieren
+        starsContainer.innerHTML = '';
+        for (let i = 1; i <= this.maxDays; i++) {
+            const star = document.createElement('span');
+            star.className = `star ${progress.completedStories >= i ? 'earned' : 'unearned'}`;
+            star.textContent = '⭐';
+            star.title = `Tag ${i}`;
+            starsContainer.appendChild(star);
+        }
+        
+        // Fortschrittstext
+        const completed = progress.completedStories || 0;
+        progressText.textContent = `${completed} von ${this.maxDays} Geschichten gelesen`;
+        
+        // Bonussterne hinzufügen
+        const bonusStars = progress.bonusStars || 0;
+        if (bonusStars > 0) {
+            const bonusContainer = document.createElement('div');
+            bonusContainer.className = 'bonus-stars';
+            bonusContainer.innerHTML = `<span>Bonus: ${bonusStars} 🌟</span>`;
+            starsContainer.parentNode.insertBefore(bonusContainer, progressText);
+        }
+    }
+    
+    async startDailyStory() {
+        try {
+            this.hideAllScreens();
+            document.getElementById('storyScreen').classList.remove('hidden');
+            this.currentScreen = 'story';
+            
+            // Story laden und anzeigen
+            await this.storyManager.loadDailyStory(this.currentDay);
+            
+            // Audio für Story vorbereiten
+            this.audioManager.playBackgroundMusic('story-theme');
+            
+            // Story-Titel setzen
+            const storyData = this.storyManager.getCurrentStory();
+            document.getElementById('storyTitle').textContent = storyData.title;
+            
+        } catch (error) {
+            console.error('Fehler beim Laden der Geschichte:', error);
+            this.showError('Fehler beim Laden der Geschichte.');
+        }
+    }
+    
+    completeStory() {
+        // Story als abgeschlossen markieren
+        this.saveManager.markStoryCompleted(this.currentDay);
+        
+        // Belohnung zeigen
+        this.showStoryReward();
+        
+        // Nächsten Tag freischalten (falls verfügbar)
+        if (this.currentDay < this.maxDays) {
+            this.currentDay++;
+            this.saveManager.setCurrentDay(this.currentDay);
+        }
+        
+        // Zurück zum Hauptmenü
+        setTimeout(() => {
+            this.showMainMenu();
+        }, 3000);
+    }
+    
+    showStoryReward() {
+        // Erfolgs-Animation und Sound
+        this.audioManager.playSound('success');
+        this.ui.showNotification('Geschichte abgeschlossen! ⭐', 'success');
+        
+        // Konfetti-Animation (falls verfügbar)
+        if (typeof confetti !== 'undefined') {
+            confetti({
+                particleCount: 100,
+                spread: 70,
+                origin: { y: 0.6 }
+            });
+        }
+    }
+    
+    showGamesScreen() {
+        this.hideAllScreens();
+        document.getElementById('gamesScreen').classList.remove('hidden');
+        this.currentScreen = 'games';
+        
+        this.audioManager.playBackgroundMusic('games-theme');
+    }
+    
+    async startGame(gameType) {
+        try {
+            this.hideAllScreens();
+            document.getElementById('gameContainer').classList.remove('hidden');
+            this.currentScreen = 'game';
+            
+            // Spiel initialisieren
+            await this.gameEngine.startGame(gameType);
+            
+            // Game-spezifische Musik
+            this.audioManager.playBackgroundMusic('game-theme');
+            
+        } catch (error) {
+            console.error('Fehler beim Starten des Spiels:', error);
+            this.showError('Fehler beim Starten des Spiels.');
+        }
+    }
+    
+    showParentArea() {
+        this.hideAllScreens();
+        document.getElementById('parentScreen').classList.remove('hidden');
+        this.currentScreen = 'parent';
+        
+        // Elternbereich initialisieren
+        this.parentArea.init();
+        
+        this.audioManager.playBackgroundMusic('calm-theme');
+    }
+    
+    showSettings() {
+        this.hideAllScreens();
+        document.getElementById('settingsScreen').classList.remove('hidden');
+        this.currentScreen = 'settings';
+        
+        // Aktuelle Einstellungen laden
+        this.loadCurrentSettings();
+    }
+    
+    showHelp() {
+        this.hideAllScreens();
+        document.getElementById('helpScreen').classList.remove('hidden');
+        this.currentScreen = 'help';
+        
+        // Hilfe-Events einrichten
+        this.setupHelpEvents();
+    }
+    
+    setupHelpEvents() {
+        document.querySelectorAll('.help-card').forEach(card => {
+            card.addEventListener('click', (e) => {
+                const helpType = e.currentTarget.dataset.help;
+                this.showHelpModal(helpType);
+            });
+        });
+    }
+    
+    showHelpModal(helpType) {
+        const modal = document.getElementById('modal');
+        const modalBody = document.getElementById('modalBody');
+        
+        let content = '';
+        
+        switch (helpType) {
+            case 'tutorial':
+                content = this.getTutorialContent();
+                break;
+            case 'stories':
+                content = this.getStoriesHelpContent();
+                break;
+            case 'games':
+                content = this.getGamesHelpContent();
+                break;
+            case 'parents':
+                content = this.getParentsHelpContent();
+                break;
+        }
+        
+        modalBody.innerHTML = content;
+        modal.classList.remove('hidden');
+        
+        // Modal schließen
+        document.getElementById('modalClose').onclick = () => {
+            modal.classList.add('hidden');
+        };
+        
+        modal.onclick = (e) => {
+            if (e.target === modal) {
+                modal.classList.add('hidden');
+            }
+        };
+    }
+    
+    getTutorialContent() {
+        return `
+            <h3>📚 Tutorial</h3>
+            <div class="tutorial-content">
+                <h4>Willkommen bei Maya & Sophie!</h4>
+                <p>Dieses Spiel hilft dir beim Lesen lernen. Jeden Tag gibt es eine neue Geschichte mit Maya, Sophie und dem kleinen Luca.</p>
+                
+                <h4>So funktioniert's:</h4>
+                <ol>
+                    <li><strong>Tägliche Geschichte:</strong> Lies jeden Tag eine neue Geschichte</li>
+                    <li><strong>Lernspiele:</strong> Spiele Spiele, um das Gelernte zu üben</li>
+                    <li><strong>Sterne sammeln:</strong> Für jede abgeschlossene Geschichte bekommst du einen Stern</li>
+                    <li><strong>Bonusaufgaben:</strong> Deine Eltern können dir extra Sterne geben</li>
+                </ol>
+                
+                <h4>Navigation:</h4>
+                <p>Nutze die Buttons am oberen Rand, um zwischen den Bereichen zu wechseln. Der "Zurück"-Button bringt dich immer zum Hauptmenü.</p>
+                
+                <button class="tutorial-btn" onclick="document.getElementById('modal').classList.add('hidden')">Tutorial schließen</button>
+            </div>
+        `;
+    }
+    
+    getStoriesHelpContent() {
+        return `
+            <h3>📖 Geschichten</h3>
+            <div class="help-content">
+                <p>Die Geschichten erzählen das Abenteuer von Maya und Sophie, die ihren kleinen Bruder Luca vor dem Fluch der Hexe Crunella retten müssen.</p>
+                
+                <h4>Story-Features:</h4>
                 <ul>
-                    <li>Folge den Anweisungen auf dem Bildschirm.</li>
-                    <li>Nutze die Maus oder Tastatur, um zu spielen.</li>
-                    <li>Sammle Punkte, indem du die Aufgaben richtig löst.</li>
+                    <li>35 Tage mit je einer Geschichte</li>
+                    <li>Interaktive Bilderbücher</li>
+                    <li>Audio-Unterstützung (Vorlesen)</li>
+                    <li>Lernfokus auf Buchstaben und Silben</li>
                 </ul>
-                <h4>Tipps:</h4>
+                
+                <h4>Navigation:</h4>
                 <ul>
-                    <li>Nimm dir Zeit und lies die Anweisungen sorgfältig durch.</li>
-                    <li>Du kannst das Spiel jederzeit pausieren oder neu starten.</li>
-                    <li>Frage Maya und Sophie um Rat, wenn du nicht weiterkommst.</li>
+                    <li>Nutze "Weiter" und "Zurück" um durch die Geschichte zu blättern</li>
+                    <li>Klicke auf 🔊 um dir die Geschichte vorlesen zu lassen</li>
+                    <li>Am Ende kannst du die Geschichte abschließen</li>
                 </ul>
             </div>
         `;
-        helpContainer.style.display = 'flex';
     }
     
-    function showManual() {
-        manualContainer.style.display = 'flex';
+    getGamesHelpContent() {
+        return `
+            <h3>🎮 Lernspiele</h3>
+            <div class="help-content">
+                <p>Die Spiele sind nach Schwierigkeitsgrad und Lerninhalt sortiert:</p>
+                
+                <h4>Schwierigkeitsgrade:</h4>
+                <ul>
+                    <li><span class="difficulty easy">Leicht</span> - Für Anfänger (1. Klasse)</li>
+                    <li><span class="difficulty medium">Mittel</span> - Für Fortgeschrittene (1.-2. Klasse)</li>
+                    <li><span class="difficulty hard">Schwer</span> - Für Profis (2. Klasse)</li>
+                </ul>
+                
+                <h4>Spielkategorien:</h4>
+                <ul>
+                    <li><strong>Buchstaben & Lesen:</strong> Memory, Wörter bauen, Lese-Rennen</li>
+                    <li><strong>Zahlen & Rechnen:</strong> Zählen, einfache Rechenaufgaben</li>
+                    <li><strong>Bonusspiele:</strong> Gedächtnistraining, Farben</li>
+                </ul>
+            </div>
+        `;
     }
+    
+    getParentsHelpContent() {
+        return `
+            <h3>👨‍👩‍👧‍👦 Elternbereich</h3>
+            <div class="help-content">
+                <p>Hier können Eltern den Fortschritt verfolgen und Bonussterne vergeben:</p>
+                
+                <h4>Fortschritt verfolgen:</h4>
+                <ul>
+                    <li>Übersicht über abgeschlossene Geschichten</li>
+                    <li>Spielzeit und Lernfortschritt</li>
+                    <li>Detaillierte Statistiken</li>
+                </ul>
+                
+                <h4>Bonusaufgaben:</h4>
+                <ul>
+                    <li><strong>Lesehäuser:</strong> +5 Sterne pro gelesenes Buch</li>
+                    <li><strong>Lerntagebuch:</strong> +3 Sterne pro Eintrag</li>
+                    <li><strong>Wortlisten:</strong> +2 Sterne pro Liste</li>
+                </ul>
+                
+                <h4>Einstellungen:</h4>
+                <ul>
+                    <li>Schwierigkeitsgrad anpassen</li>
+                    <li>Tägliche Spielzeit begrenzen</li>
+                    <li>Audio-Einstellungen</li>
+                </ul>
+            </div>
+        `;
+    }
+    
+    loadCurrentSettings() {
+        const settings = this.saveManager.getSettings();
+        
+        // Lautstärke
+        document.getElementById('masterVolume').value = settings.volume * 100;
+        document.getElementById('volumeDisplay').textContent = `${Math.round(settings.volume * 100)}%`;
+        
+        // Audio-Einstellungen
+        document.getElementById('musicEnabled').checked = settings.musicEnabled;
+        document.getElementById('soundEffects').checked = settings.soundEffectsEnabled;
+        
+        // Anzeige-Einstellungen
+        document.getElementById('textSize').value = settings.textSize;
+        document.getElementById('animations').checked = settings.animationsEnabled;
+        
+        // Spiel-Einstellungen
+        document.getElementById('autoSave').checked = settings.autoSaveEnabled;
+    }
+    
+    setTextSize(size) {
+        document.body.className = document.body.className.replace(/text-size-\w+/g, '');
+        document.body.classList.add(`text-size-${size}`);
+        this.saveManager.updateSettings({ textSize: size });
+    }
+    
+    resetProgress() {
+        if (confirm('Möchtest du wirklich den gesamten Fortschritt zurücksetzen? Diese Aktion kann nicht rückgängig gemacht werden.')) {
+            this.saveManager.resetProgress();
+            this.currentDay = 1;
+            this.showMainMenu();
+            this.ui.showNotification('Fortschritt wurde zurückgesetzt', 'info');
+        }
+    }
+    
+    exportGameData() {
+        const data = this.saveManager.exportData();
+        const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `maya-sophie-spielstand-${new Date().toISOString().split('T')[0]}.json`;
+        a.click();
+        
+        URL.revokeObjectURL(url);
+        this.ui.showNotification('Spielstand wurde exportiert', 'success');
+    }
+    
+    handleKeyboardInput(e) {
+        // Escape-Taste: Zurück zum Hauptmenü
+        if (e.key === 'Escape' && this.currentScreen !== 'menu') {
+            this.showMainMenu();
+            return;
+        }
+        
+        // Pfeiltasten für Story-Navigation
+        if (this.currentScreen === 'story') {
+            if (e.key === 'ArrowLeft') {
+                this.storyManager.prevStoryPart();
+            } else if (e.key === 'ArrowRight') {
+                this.storyManager.nextStoryPart();
+            }
+        }
+        
+        // Leertaste für Audio
+        if (e.key === ' ' && this.currentScreen === 'story') {
+            e.preventDefault();
+            this.audioManager.toggleStoryAudio();
+        }
+    }
+    
+    hideAllScreens() {
+        document.querySelectorAll('.screen').forEach(screen => {
+            screen.classList.add('hidden');
+        });
+    }
+    
+    showError(message) {
+        this.ui.showNotification(message, 'error');
+        console.error('Game Error:', message);
+    }
+}
+
+// Spiel initialisieren wenn DOM geladen ist
+document.addEventListener('DOMContentLoaded', () => {
+    window.game = new MayaSophieGame();
 });
+
+// Service Worker für Offline-Funktionalität (optional)
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js')
+            .then(registration => {
+                console.log('SW registered: ', registration);
+            })
+            .catch(registrationError => {
+                console.log('SW registration failed: ', registrationError);
+            });
+    });
+}
