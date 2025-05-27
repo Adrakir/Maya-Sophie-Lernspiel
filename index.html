@@ -4,59 +4,61 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Maya & Sophie: Der Fluch der Hexe Crunella</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f9f7fe;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            text-align: center;
-        }
-        .container {
-            max-width: 800px;
-            padding: 20px;
-            background-color: white;
-            border-radius: 12px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-        }
-        h1 {
-            color: #ff6b9d;
-        }
-        .start-button {
-            background-color: #ffde59;
-            border: none;
-            padding: 12px 24px;
-            font-size: 18px;
-            border-radius: 8px;
-            cursor: pointer;
-            margin-top: 20px;
-            box-shadow: 0 4px 0 #ff9a3c;
-        }
-        .start-button:hover {
-            background-color: #ffe97d;
-        }
-    </style>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
 </head>
 <body>
-    <div class="container">
-        <h1>Maya & Sophie: Der Fluch der Hexe Crunella</h1>
-        <p>Ein interaktives Leselernspiel für Kinder der 1. und 2. Klasse</p>
+    <div id="game-container">
+        <div id="main-menu">
+            <h1>Maya & Sophie: Der Fluch der Hexe Crunella</h1>
+            <div class="character-container">
+                <img src="assets/characters/maya.png" alt="Maya" class="character maya">
+                <img src="assets/characters/sophie.png" alt="Sophie" class="character sophie">
+            </div>
+            <div class="menu-buttons">
+                <button id="start-game">Spiel starten</button>
+                <button id="tutorial-btn">Tutorial</button>
+                <button id="help-btn">Hilfe</button>
+                <button id="manual-btn">Handbuch</button>
+            </div>
+        </div>
         
-        <div id="game-content">
-            <p>Willkommen bei Maya & Sophie! Hilf den beiden, ihren kleinen Bruder Luca vor dem Fluch der bösen Hexe Crunella zu retten.</p>
-            
-            <button id="start-game" class="start-button">Spiel starten</button>
+        <div id="game-content" style="display: none;"></div>
+        
+        <div id="tutorial-container" class="modal" style="display: none;">
+            <div class="modal-content">
+                <span class="close-btn">&times;</span>
+                <h2>Tutorial</h2>
+                <div id="tutorial-content"></div>
+                <div class="nav-buttons">
+                    <button id="prev-btn">Zurück</button>
+                    <button id="next-btn">Weiter</button>
+                </div>
+            </div>
+        </div>
+        
+        <div id="help-container" class="modal" style="display: none;">
+            <div class="modal-content">
+                <span class="close-btn">&times;</span>
+                <h2>Hilfe</h2>
+                <div id="help-content"></div>
+            </div>
+        </div>
+        
+        <div id="manual-container" class="modal" style="display: none;">
+            <div class="modal-content">
+                <span class="close-btn">&times;</span>
+                <h2>Handbuch</h2>
+                <div class="tabs">
+                    <button class="tab-btn active" data-tab="kids">Für Kinder</button>
+                    <button class="tab-btn" data-tab="parents">Für Eltern</button>
+                </div>
+                <div id="kids-manual" class="manual-content"></div>
+                <div id="parents-manual" class="manual-content" style="display: none;"></div>
+            </div>
         </div>
     </div>
-
-    <script>
-        document.getElementById('start-game').addEventListener('click', function() {
-            alert('Willkommen im Spiel "Maya & Sophie: Der Fluch der Hexe Crunella"!\n\nIn diesem Spiel hilfst du Maya und Sophie, ihren kleinen Bruder Luca zu retten. Das vollständige Spiel wird bald geladen!');
-        });
-    </script>
+    
+    <script src="js/main.js"></script>
 </body>
 </html>
