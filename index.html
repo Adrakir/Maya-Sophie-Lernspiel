@@ -3,62 +3,397 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Maya & Sophie: Der Fluch der Hexe Crunella</title>
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <title>Maya, Sophie & der Fluch der Hexe Crunella</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@300;400;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div id="game-container">
-        <div id="main-menu">
-            <h1>Maya & Sophie: Der Fluch der Hexe Crunella</h1>
-            <div class="character-container">
-                <img src="assets/characters/maya.png" alt="Maya" class="character maya">
-                <img src="assets/characters/sophie.png" alt="Sophie" class="character sophie">
-            </div>
-            <div class="menu-buttons">
-                <button id="start-game">Spiel starten</button>
-                <button id="tutorial-btn">Tutorial</button>
-                <button id="help-btn">Hilfe</button>
-                <button id="manual-btn">Handbuch</button>
-            </div>
-        </div>
-        
-        <div id="game-content" style="display: none;"></div>
-        
-        <div id="tutorial-container" class="modal" style="display: none;">
-            <div class="modal-content">
-                <span class="close-btn">&times;</span>
-                <h2>Tutorial</h2>
-                <div id="tutorial-content"></div>
-                <div class="nav-buttons">
-                    <button id="prev-btn">Zurück</button>
-                    <button id="next-btn">Weiter</button>
-                </div>
-            </div>
-        </div>
-        
-        <div id="help-container" class="modal" style="display: none;">
-            <div class="modal-content">
-                <span class="close-btn">&times;</span>
-                <h2>Hilfe</h2>
-                <div id="help-content"></div>
-            </div>
-        </div>
-        
-        <div id="manual-container" class="modal" style="display: none;">
-            <div class="modal-content">
-                <span class="close-btn">&times;</span>
-                <h2>Handbuch</h2>
-                <div class="tabs">
-                    <button class="tab-btn active" data-tab="kids">Für Kinder</button>
-                    <button class="tab-btn" data-tab="parents">Für Eltern</button>
-                </div>
-                <div id="kids-manual" class="manual-content"></div>
-                <div id="parents-manual" class="manual-content" style="display: none;"></div>
+    <!-- Ladebildschirm -->
+    <div id="loadingScreen" class="loading-screen">
+        <div class="loading-content">
+            <img src="assets/images/characters/maya-icon.png" alt="Maya" class="loading-icon bounce">
+            <h2>Maya & Sophie laden das Abenteuer...</h2>
+            <div class="loading-bar">
+                <div class="loading-progress" id="loadingProgress"></div>
             </div>
         </div>
     </div>
+
+    <!-- Hauptmenü -->
+    <div id="mainMenu" class="screen hidden">
+        <div class="main-menu-bg">
+            <img src="assets/images/backgrounds/hexenhaus.jpg" alt="Hexenhaus" class="background-image">
+        </div>
+        
+        <div class="menu-overlay">
+            <div class="header">
+                <h1 class="game-title">Maya, Sophie & der Fluch der Hexe Crunella</h1>
+                <div class="character-icons">
+                    <img src="assets/images/characters/maya-icon.png" alt="Maya" class="character-icon">
+                    <img src="assets/images/characters/sophie-icon.png" alt="Sophie" class="character-icon">
+                    <img src="assets/images/characters/luca-icon.png" alt="Luca" class="character-icon">
+                    <img src="assets/images/characters/crunella-icon.png" alt="Crunella" class="character-icon">
+                </div>
+            </div>
+
+            <div class="main-menu-content">
+                <div class="welcome-message" id="welcomeMessage">
+                    <h2>Willkommen zurück!</h2>
+                    <p id="currentDay">Tag 1 von 35</p>
+                </div>
+
+                <div class="menu-buttons">
+                    <button class="menu-btn primary" id="startStoryBtn">
+                        <span class="btn-icon">📖</span>
+                        Heutige Geschichte
+                    </button>
+                    
+                    <button class="menu-btn" id="gamesBtn">
+                        <span class="btn-icon">🎮</span>
+                        Spiele
+                    </button>
+                    
+                    <button class="menu-btn" id="parentAreaBtn">
+                        <span class="btn-icon">👨‍👩‍👧‍👦</span>
+                        Elternbereich
+                    </button>
+                    
+                    <button class="menu-btn" id="settingsBtn">
+                        <span class="btn-icon">⚙️</span>
+                        Einstellungen
+                    </button>
+                    
+                    <button class="menu-btn" id="helpBtn">
+                        <span class="btn-icon">❓</span>
+                        Hilfe
+                    </button>
+                </div>
+
+                <div class="progress-display">
+                    <div class="progress-stars" id="progressStars"></div>
+                    <p class="progress-text" id="progressText">0 von 35 Geschichten gelesen</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Story-Bereich -->
+    <div id="storyScreen" class="screen hidden">
+        <div class="story-header">
+            <button class="back-btn" id="storyBackBtn">← Zurück</button>
+            <h2 id="storyTitle">Tag 1: Der unheimliche Brief</h2>
+            <div class="audio-controls">
+                <button class="audio-btn" id="storyAudioBtn">🔊</button>
+                <button class="audio-btn" id="storyPauseBtn">⏸️</button>
+            </div>
+        </div>
+        
+        <div class="story-content">
+            <div class="story-image-container">
+                <img id="storyImage" src="" alt="Story Image" class="story-image">
+            </div>
+            
+            <div class="story-text-container">
+                <div id="storyText" class="story-text"></div>
+                <div class="story-navigation">
+                    <button class="nav-btn" id="prevStoryBtn" disabled>← Vorher</button>
+                    <span id="storyProgress">1 / 3</span>
+                    <button class="nav-btn" id="nextStoryBtn">Weiter →</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="story-footer">
+            <button class="complete-btn" id="completeStoryBtn">Geschichte abschließen</button>
+        </div>
+    </div>
+
+    <!-- Spiele-Bereich -->
+    <div id="gamesScreen" class="screen hidden">
+        <div class="games-header">
+            <button class="back-btn" id="gamesBackBtn">← Zurück</button>
+            <h2>Lernspiele</h2>
+        </div>
+        
+        <div class="games-grid">
+            <div class="game-category">
+                <h3>Buchstaben & Lesen</h3>
+                <div class="games-list">
+                    <button class="game-btn" data-game="letterMatch">
+                        <span class="game-icon">🔤</span>
+                        <span class="game-title">Buchstaben-Memory</span>
+                        <span class="difficulty easy">Leicht</span>
+                    </button>
+                    
+                    <button class="game-btn" data-game="wordBuilder">
+                        <span class="game-icon">📝</span>
+                        <span class="game-title">Wörter Bauen</span>
+                        <span class="difficulty medium">Mittel</span>
+                    </button>
+                    
+                    <button class="game-btn" data-game="readingRace">
+                        <span class="game-icon">🏃</span>
+                        <span class="game-title">Lese-Rennen</span>
+                        <span class="difficulty hard">Schwer</span>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="game-category">
+                <h3>Zahlen & Rechnen</h3>
+                <div class="games-list">
+                    <button class="game-btn" data-game="numberCount">
+                        <span class="game-icon">🔢</span>
+                        <span class="game-title">Zahlen Zählen</span>
+                        <span class="difficulty easy">Leicht</span>
+                    </button>
+                    
+                    <button class="game-btn" data-game="mathQuest">
+                        <span class="game-icon">➕</span>
+                        <span class="game-title">Rechen-Abenteuer</span>
+                        <span class="difficulty medium">Mittel</span>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="game-category">
+                <h3>Bonusspiele</h3>
+                <div class="games-list">
+                    <button class="game-btn" data-game="memoryPuzzle">
+                        <span class="game-icon">🧩</span>
+                        <span class="game-title">Gedächtnis-Puzzle</span>
+                        <span class="difficulty medium">Mittel</span>
+                    </button>
+                    
+                    <button class="game-btn" data-game="colorMatch">
+                        <span class="game-icon">🎨</span>
+                        <span class="game-title">Farben Finden</span>
+                        <span class="difficulty easy">Leicht</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Spiel-Container -->
+    <div id="gameContainer" class="screen hidden">
+        <div class="game-header">
+            <button class="back-btn" id="gameBackBtn">← Zurück</button>
+            <h2 id="gameTitle">Spiel</h2>
+            <div class="game-stats">
+                <span id="gameScore">Punkte: 0</span>
+                <span id="gameTimer">Zeit: 0:00</span>
+            </div>
+        </div>
+        
+        <div id="gameArea" class="game-area">
+            <!-- Spiel-Inhalt wird hier dynamisch geladen -->
+        </div>
+        
+        <div class="game-footer">
+            <button class="game-action-btn" id="gameHintBtn">💡 Tipp</button>
+            <button class="game-action-btn" id="gameRestartBtn">🔄 Neu starten</button>
+        </div>
+    </div>
+
+    <!-- Elternbereich -->
+    <div id="parentScreen" class="screen hidden">
+        <div class="parent-header">
+            <button class="back-btn" id="parentBackBtn">← Zurück</button>
+            <h2>Elternbereich</h2>
+        </div>
+        
+        <div class="parent-content">
+            <div class="parent-section">
+                <h3>Fortschritt</h3>
+                <div class="progress-overview">
+                    <div class="progress-chart" id="progressChart"></div>
+                    <div class="progress-details" id="progressDetails"></div>
+                </div>
+            </div>
+            
+            <div class="parent-section">
+                <h3>Bonusaufgaben</h3>
+                <div class="bonus-tasks">
+                    <div class="task-input">
+                        <label for="readingHouse">Lesehäuser gelesen:</label>
+                        <input type="number" id="readingHouse" min="0" max="10">
+                        <button class="add-bonus-btn" data-task="readingHouse">+5 ⭐</button>
+                    </div>
+                    
+                    <div class="task-input">
+                        <label for="learningDiary">Lerntagebuch-Einträge:</label>
+                        <input type="number" id="learningDiary" min="0" max="5">
+                        <button class="add-bonus-btn" data-task="learningDiary">+3 ⭐</button>
+                    </div>
+                    
+                    <div class="task-input">
+                        <label for="wordLists">Wortlisten erstellt:</label>
+                        <input type="number" id="wordLists" min="0" max="3">
+                        <button class="add-bonus-btn" data-task="wordLists">+2 ⭐</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="parent-section">
+                <h3>Einstellungen</h3>
+                <div class="parent-settings">
+                    <div class="setting-item">
+                        <label for="difficultyLevel">Schwierigkeitsgrad:</label>
+                        <select id="difficultyLevel">
+                            <option value="easy">Leicht (1. Klasse)</option>
+                            <option value="medium">Mittel (1.-2. Klasse)</option>
+                            <option value="hard">Schwer (2. Klasse)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <label for="dailyLimit">Tägliche Spielzeit (Minuten):</label>
+                        <input type="number" id="dailyLimit" min="10" max="120" value="30">
+                    </div>
+                    
+                    <div class="setting-item">
+                        <label for="audioEnabled">Audio aktiviert:</label>
+                        <input type="checkbox" id="audioEnabled" checked>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Einstellungen -->
+    <div id="settingsScreen" class="screen hidden">
+        <div class="settings-header">
+            <button class="back-btn" id="settingsBackBtn">← Zurück</button>
+            <h2>Einstellungen</h2>
+        </div>
+        
+        <div class="settings-content">
+            <div class="setting-group">
+                <h3>Audio</h3>
+                <div class="setting-item">
+                    <label for="masterVolume">Lautstärke:</label>
+                    <input type="range" id="masterVolume" min="0" max="100" value="70">
+                    <span id="volumeDisplay">70%</span>
+                </div>
+                
+                <div class="setting-item">
+                    <label for="musicEnabled">Musik:</label>
+                    <input type="checkbox" id="musicEnabled" checked>
+                </div>
+                
+                <div class="setting-item">
+                    <label for="soundEffects">Soundeffekte:</label>
+                    <input type="checkbox" id="soundEffects" checked>
+                </div>
+            </div>
+            
+            <div class="setting-group">
+                <h3>Anzeige</h3>
+                <div class="setting-item">
+                    <label for="textSize">Textgröße:</label>
+                    <select id="textSize">
+                        <option value="small">Klein</option>
+                        <option value="medium" selected>Mittel</option>
+                        <option value="large">Groß</option>
+                    </select>
+                </div>
+                
+                <div class="setting-item">
+                    <label for="animations">Animationen:</label>
+                    <input type="checkbox" id="animations" checked>
+                </div>
+            </div>
+            
+            <div class="setting-group">
+                <h3>Spiel</h3>
+                <div class="setting-item">
+                    <label for="autoSave">Automatisches Speichern:</label>
+                    <input type="checkbox" id="autoSave" checked>
+                </div>
+                
+                <div class="setting-item">
+                    <button class="settings-btn" id="resetProgressBtn">Fortschritt zurücksetzen</button>
+                </div>
+                
+                <div class="setting-item">
+                    <button class="settings-btn" id="exportDataBtn">Daten exportieren</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hilfe & Tutorial -->
+    <div id="helpScreen" class="screen hidden">
+        <div class="help-header">
+            <button class="back-btn" id="helpBackBtn">← Zurück</button>
+            <h2>Hilfe & Anleitung</h2>
+        </div>
+        
+        <div class="help-content">
+            <div class="help-section">
+                <h3>Spielanleitung</h3>
+                <div class="help-cards">
+                    <div class="help-card" data-help="tutorial">
+                        <h4>📚 Tutorial starten</h4>
+                        <p>Lerne die Grundlagen des Spiels kennen</p>
+                    </div>
+                    
+                    <div class="help-card" data-help="stories">
+                        <h4>📖 Geschichten</h4>
+                        <p>Wie funktionieren die täglichen Geschichten?</p>
+                    </div>
+                    
+                    <div class="help-card" data-help="games">
+                        <h4>🎮 Spiele</h4>
+                        <p>Übersicht über alle Lernspiele</p>
+                    </div>
+                    
+                    <div class="help-card" data-help="parents">
+                        <h4>👨‍👩‍👧‍👦 Elternbereich</h4>
+                        <p>Funktionen für Eltern erklärt</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="help-section">
+                <h3>Handbuch</h3>
+                <p>Das vollständige Handbuch finden Sie <a href="docs/manual.html" target="_blank">hier</a>.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modale Dialoge -->
+    <div id="modal" class="modal hidden">
+        <div class="modal-content">
+            <span class="modal-close" id="modalClose">&times;</span>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+
+    <!-- Audio Player (versteckt) -->
+    <audio id="backgroundMusic" loop>
+        <source src="assets/audio/background/main-theme.mp3" type="audio/mpeg">
+    </audio>
     
+    <audio id="soundEffect">
+        <source src="" type="audio/mpeg">
+    </audio>
+
+    <!-- Scripts -->
+    <script src="data/content.js"></script>
+    <script src="js/audioManager.js"></script>
+    <script src="js/saveManager.js"></script>
+    <script src="js/components/ui.js"></script>
+    <script src="js/components/games.js"></script>
+    <script src="js/components/tutorial.js"></script>
+    <script src="js/storyManager.js"></script>
+    <script src="js/gameEngine.js"></script>
+    <script src="js/parentArea.js"></script>
     <script src="js/main.js"></script>
 </body>
 </html>

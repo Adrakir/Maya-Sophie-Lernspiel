@@ -1,0 +1,29 @@
+Maya-Sophie-Lernspiel/
+├── index.html                    # Haupteinstiegspunkt
+├── css/
+│   ├── main.css                 # Hauptstyles
+│   ├── components.css           # Komponentenstyles
+│   └── animations.css           # Animationen
+├── js/
+│   ├── main.js                  # Hauptlogik
+│   ├── gameEngine.js            # Spiel-Engine
+│   ├── storyManager.js          # Geschichten-Manager
+│   ├── audioManager.js          # Audio-System
+│   ├── saveManager.js           # Speicher-System
+│   ├── parentArea.js            # Elternbereich
+│   └── components/
+│       ├── ui.js                # UI-Komponenten
+│       ├── games.js             # Minispiele
+│       └── tutorial.js          # Tutorial-System
+├── data/
+│   ├── stories/                 # Tägliche Geschichten
+│   ├── games/                   # Spieldaten
+│   └── content.js              # Inhaltsstruktur
+├── assets/
+│   ├── images/                  # Bilder
+│   ├── audio/                   # Sounds & Musik
+│   └── fonts/                   # Schriftarten
+├── docs/
+│   ├── manual.html             # Handbuch
+│   └── documentation.html      # Entwicklerdoku
+└── README.md                   # Projektbeschreibung
